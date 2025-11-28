@@ -1,0 +1,9 @@
+- name: creating appsetup first   # we are getting it from common role directory
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: appsetup.yaml
+
+- name : creating nodejs setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: nodejs.yaml
