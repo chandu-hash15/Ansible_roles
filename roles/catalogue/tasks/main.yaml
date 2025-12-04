@@ -9,10 +9,6 @@
         tasks_from: nodejs.yaml
 
 
-- name: systemsetup
-  ansible.builtin.import_role:
-        name: common
-        tasks_from: systemsetup.yaml
 
 
 - name: copying mongo.repo file to /etc/yum.repos.d/mongo.repo
@@ -25,15 +21,19 @@
       name: mongodb-mongosh
       state: present  
 
-- name: connect to mongodb client
-  ansible.builtin.command: mongosh {{ MONGODB }} --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+- name: connect to mongodb catalogue
+  ansible.builtin.command: mongosh {{ MONGODB_HOST }} --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')
   register: catalogue_output
   failed_when: false
 
-- name: print catalogue output
-  ansible.builtin.debug:
-    msg: "{{ catalogue_output.stdout }}"
 
 - name: load products into mongodb
-  ansible.builtin.shell: mongosh --host {{ MONGODB }} </app/db/master-data.js
+  ansible.builtin.shell: mongosh --host {{ MONGODB_HOST }} </app/db/master-data.js
   when: catalogue_output.stdout | int < 0
+
+
+
+- name: systemsetup
+  ansible.builtin.import_role:
+      name: common
+      tasks_from: systemsetup.yaml
