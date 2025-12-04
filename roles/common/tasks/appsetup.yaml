@@ -19,15 +19,15 @@
 - name: Remove the existing file
   ansible.builtin.file:
     state: absent
-    path: /tmp/catalogue.zip
+    path: /tmp/{{ component }}.zip
 
-- name: Download catalogue app
+- name: Download {{ component }} app
   ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-    dest: /tmp/catalogue.zip
+    url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip
+    dest: /tmp/{{ component }}.zip
 
 - name: Unzip the downloaded file
   ansible.builtin.unarchive:
-    src: /tmp/catalogue.zip
+    src: /tmp/{{ component }}.zip
     dest: /app
     remote_src: yes
