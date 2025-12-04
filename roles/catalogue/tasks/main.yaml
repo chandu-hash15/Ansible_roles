@@ -7,3 +7,26 @@
   ansible.builtin.import_role:
         name: common
         tasks_from: nodejs.yaml
+
+
+- name: copying mongo.repo file to /etc/yum.repos.d/mongo.repo
+  ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo 
+
+- name: install mongodb client
+  ansible.builtin.package:
+      name: mongodb-mongosh
+      state: present  
+
+- name: connect to monodb client
+  ansible.builtin.command: mongosh mongodb.mitha.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+  register: catalogue_output
+
+- name: print catalogue ec2_output
+  ansible.builtin.debug:
+      msg: "{{ catalogue_output }}"
+
+- name: load products into mongodb
+  ansible.builtin.shell: mongosh --host mongodb.mitha.fun </app/db/master-data.js
+  when: catalogue_output.stdout | int <
