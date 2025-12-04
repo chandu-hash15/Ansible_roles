@@ -1,4 +1,4 @@
 - name: appsetup for catalogue by using import role
   ansible.builtin.import_role:
-        name: chandu
+        name: common
         tasks_from: appsetup.yaml
