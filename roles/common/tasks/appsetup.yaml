@@ -1,7 +1,7 @@
 - name: Add the system user roboshop
   ansible.builtin.user:
     name: roboshop
-    comment: roboshop system user
+    comment: "roboshop system user"
     system: true
     shell: /sbin/nologin
     home: /app
@@ -11,23 +11,23 @@
     state: absent
     path: /app
 
-- name: Create /app directory
+- name: Create a directory if it does not exist
   ansible.builtin.file:
     state: directory
     path: /app
 
-- name: Remove existing ZIP file
+- name: Remove the existing file
   ansible.builtin.file:
     state: absent
-    path: /tmp/{{ component }}.zip
+    path: /tmp/catalogue.zip
 
-- name: Download {{ component }} app
+- name: Download catalogue app
   ansible.builtin.get_url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip
-    dest: /tmp/{{ component }}.zip
+    url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+    dest: /tmp/catalogue.zip
 
 - name: Unzip the downloaded file
   ansible.builtin.unarchive:
-    src: /tmp/{{ component }}.zip
+    src: /tmp/catalogue.zip
     dest: /app
     remote_src: yes
