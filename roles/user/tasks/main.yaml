@@ -1,0 +1,14 @@
+- name: appsetup for catalogue by using import role
+  ansible.builtin.import_role:
+        name: common
+        tasks_from: appsetup.yaml
+
+- name: installing nodejs dependencies
+  ansible.builtin.import_role:
+        name: common
+        tasks_from: nodejs.yaml
+
+- name: systemsetup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: systemsetup.yaml
