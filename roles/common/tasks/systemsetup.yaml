@@ -1,19 +1,13 @@
-- name: Unmask shipping service if masked
-  ansible.builtin.systemd:
-    name: "{{ component }}"
-    masked: no
-  ignore_errors: yes
-
-- name: Copy systemd service file
+- name: copy {{ component }} service
   ansible.builtin.template:
     src: "{{ component }}.service.j2"
     dest: "/etc/systemd/system/{{ component }}.service"
-  notify: daemon_reload
+  notify: daemon reload
 
-- name: Start service
+- name: start the service
   ansible.builtin.service:
     name: "{{ component }}"
+    state: restarted
     enabled: yes
-    state: started
 
  
