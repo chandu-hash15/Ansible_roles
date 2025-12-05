@@ -14,5 +14,5 @@
 
 - name: move jar file
   ansible.builtin.command: mv target/{{ component }}-*.jar shipping.jar
-    args:
+  args:
       chdir: /app
