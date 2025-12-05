@@ -1,3 +1,8 @@
+- name: Remove masked service file if it exists
+  ansible.builtin.file:
+    path: "/etc/systemd/system/{{ component }}.service"
+    state: absent
+
 - name: copy {{ component }} service
   ansible.builtin.template:
     src: "{{ component }}.service.j2"
@@ -7,7 +12,7 @@
 - name: start the service
   ansible.builtin.service:
     name: "{{ component }}"
-    state: restarted
     enabled: yes
+    state: started
 
  
